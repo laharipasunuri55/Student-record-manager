@@ -1,16 +1,4 @@
 
-"""
-Student Record Management System
---------------------------------
-GUI : Tkinter / ttk (standard library, no installs needed)
-Data: JSON file (students.json, created next to this script)
-
-OOP concepts demonstrated
-- Classes / encapsulation : Person, Student, PostgraduateStudent, StudentRepository, StudentApp
-- Inheritance             : Student(Person), PostgraduateStudent(Student)
-- Polymorphism            : grade(), pass_mark(), summary() are overridden in subclasses
-- Exception handling      : custom exceptions + try/except around every user action
-"""
 
 import json
 import os
@@ -21,9 +9,8 @@ from tkinter import ttk, messagebox
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "students.json")
 
 
-# ----------------------------------------------------------------------------
+
 # Custom exceptions
-# ----------------------------------------------------------------------------
 class ValidationError(Exception):
     """Raised when user input is invalid."""
 
@@ -36,9 +23,8 @@ class RecordNotFoundError(Exception):
     """Raised when a student ID is not in the repository."""
 
 
-# ----------------------------------------------------------------------------
+
 # Domain model (inheritance + polymorphism)
-# ----------------------------------------------------------------------------
 class Person:
     """Base class holding personal details with validation."""
 
@@ -116,7 +102,7 @@ class Student(Person):
             raise ValidationError("Marks must be between 0 and 100.")
         return marks
 
-    # --- polymorphic behaviour -------------------------------------------
+    #polymorphic behaviour
     def pass_mark(self):
         return 40.0
 
@@ -137,7 +123,7 @@ class Student(Person):
     def summary(self):
         return f"{self.student_id} | {super().summary()} | {self.course} | {self.LEVEL} | {self.grade()}"
 
-    # --- persistence ---------------------------------------------------
+    #persistence
     def to_dict(self):
         return {
             "type": self.LEVEL,
@@ -191,9 +177,7 @@ def student_from_dict(d):
     return Student(d["student_id"], d["name"], d["age"], d["email"], d["course"], d["marks"])
 
 
-# ----------------------------------------------------------------------------
 # Repository (file storage)
-# ----------------------------------------------------------------------------
 class StudentRepository:
     def __init__(self, path=DATA_FILE):
         self.path = path
@@ -246,9 +230,7 @@ class StudentRepository:
                 or q in s.course.lower() or q in s.email.lower()]
 
 
-# ----------------------------------------------------------------------------
 # GUI
-# ----------------------------------------------------------------------------
 class StudentApp(tk.Tk):
     COLUMNS = ("ID", "Name", "Age", "Email", "Course", "Level", "Marks", "Grade", "Status")
 
@@ -273,7 +255,7 @@ class StudentApp(tk.Tk):
         self._build_ui()
         self.refresh()
 
-    # ---------------- UI construction ----------------
+    # UI construction
     def _build_ui(self):
         style = ttk.Style(self)
         style.theme_use("clam")
@@ -391,7 +373,7 @@ class StudentApp(tk.Tk):
         self.vars["research"].set(s.extra())
         # research entry may be disabled for UG; that's fine
 
-    # ---------------- actions ----------------
+    # actions
     def add_student(self):
         try:
             self.repo.add(self.build_student())
