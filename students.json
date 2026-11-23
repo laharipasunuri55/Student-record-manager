@@ -1,0 +1,12 @@
+[
+  {
+    "type": "Postgraduate",
+    "student_id": "12345",
+    "name": "Lahari",
+    "age": 21,
+    "email": "lahari@gmail.com",
+    "course": "MCA",
+    "marks": 70.0,
+    "research_topic": "IoT"
+  }
+]
